@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <meta charset="utf-8">
+        <title>Birds — Güvercin Posta</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Special+Elite&family=Lora:wght@400;600&display=swap">
+        <style>
+            :root {
+                --bg: #E8D9BD;
+                --card: #F3E8D0;
+                --line: #C5AC83;
+                --brown: #795C43;
+                --ink: #382C24;
+                --olive: #777653;
+                --wine: #854B43;
+                --side: #382C24;
+                --sideink: #E8D9BD;
+                box-sizing: border-box;
+                padding-top: env(safe-area-inset-top,0px);
+                padding-bottom: env(safe-area-inset-bottom,0px)
+            }
+
+            @media(prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) {
+                    --bg:#2a211b;
+                    --card: #382C24;
+                    --line: #5a4a3b;
+                    --ink: #E8D9BD;
+                    --brown: #C5AC83;
+                    --side: #1c1511
+                }
+            }
+
+            :root[data-theme="dark"] {
+                --bg: #2a211b;
+                --card: #382C24;
+                --line: #5a4a3b;
+                --ink: #E8D9BD;
+                --brown: #C5AC83;
+                --side: #1c1511
+            }
+
+            * {
+                box-sizing: inherit
+            }
+
+            html {
+                scroll-padding-top: env(safe-area-inset-top,0px)
+            }
+
+            body {
+                margin: 0;
+                background-color: var(--bg);
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+                color: var(--ink);
+                font-family: Lora,Georgia,serif;
+                display: flex;
+                min-height: 100vh
+            }
+
+            h1,h2,h3 {
+                font-family: 'Playfair Display',Georgia,serif;
+                margin: .2em 0
+            }
+
+            .mono {
+                font-family: 'Special Elite','Courier New',monospace
+            }
+
+            nav {
+                width: 230px;
+                background: var(--side);
+                color: var(--sideink);
+                padding: 20px 12px;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                flex-shrink: 0;
+                border-right: 4px double var(--line)
+            }
+
+            nav .logo {
+                font: 800 28px 'Playfair Display',serif;
+                letter-spacing: 4px;
+                text-align: center
+            }
+
+            nav small {
+                display: block;
+                text-align: center;
+                font-family: 'Special Elite',monospace;
+                font-size: 11px;
+                opacity: .7;
+                margin-bottom: 14px
+            }
+
+            nav button {
+                background: none;
+                border: 0;
+                color: inherit;
+                text-align: left;
+                padding: 10px 12px;
+                border-radius: 4px;
+                font: inherit;
+                cursor: pointer;
+                display: flex;
+                gap: 10px
+            }
+
+            nav button:hover {
+                background: #ffffff14
+            }
+
+            nav button.on {
+                background: var(--wine);
+                color: #F3E8D0
+            }
+
+            main {
+                flex: 1;
+                padding: 28px;
+                max-width: 960px;
+                min-width: 0
+            }
+
+            .card {
+                background: var(--card);
+                border: 1px solid var(--line);
+                outline: 1px dashed var(--line);
+                outline-offset: -6px;
+                border-radius: 4px;
+                padding: 20px;
+                margin-bottom: 18px;
+                box-shadow: 2px 3px 0 #0002
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+                gap: 16px
+            }
+
+            .btn {
+                background: var(--brown);
+                color: #F3E8D0;
+                border: 0;
+                padding: 9px 16px;
+                border-radius: 3px;
+                font: inherit;
+                cursor: pointer;
+                font-family: 'Special Elite',monospace
+            }
+
+            .btn.wine {
+                background: var(--wine)
+            }
+
+            .btn.olive {
+                background: var(--olive)
+            }
+
+            .btn:hover {
+                filter: brightness(1.12)
+            }
+
+            .btn:disabled {
+                opacity: .5
+            }
+
+            .bar {
+                height: 12px;
+                background: #0002;
+                border: 1px solid var(--line);
+                border-radius: 2px;
+                overflow: hidden
+            }
+
+            .bar i {
+                display: block;
+                height: 100%;
+                background: var(--olive);
+                transition: width .5s
+            }
+
+            .bar.w i {
+                background: var(--wine)
+            }
+
+            input,select,textarea {
+                width: 100%;
+                padding: 10px;
+                margin: 4px 0 12px;
+                background: #fff6;
+                border: 1px solid var(--line);
+                border-radius: 3px;
+                font: inherit;
+                color: var(--ink)
+            }
+
+            .tag {
+                display: inline-block;
+                padding: 2px 8px;
+                border: 1px solid currentColor;
+                border-radius: 2px;
+                font: 12px 'Special Elite',monospace;
+                color: var(--olive)
+            }
+
+            .tag.w {
+                color: var(--wine)
+            }
+
+            .seal {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: radial-gradient(circle at 35% 30%,#b0645a,#854B43 60%,#5e312b);
+                display: inline-grid;
+                place-items: center;
+                color: #f3e8d0;
+                box-shadow: 1px 2px 3px #0005
+            }
+
+            .stamp {
+                display: inline-block;
+                border: 3px double var(--wine);
+                color: var(--wine);
+                padding: 2px 10px;
+                font: 700 14px 'Special Elite',monospace;
+                transform: rotate(-6deg);
+                letter-spacing: 2px
+            }
+
+            .row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 0;
+                border-bottom: 1px dotted var(--line);
+                flex-wrap: wrap
+            }
+
+            .tabs {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 14px
+            }
+
+            .tabs button {
+                flex: 0 0 auto
+            }
+
+            .route {
+                position: relative;
+                height: 90px;
+                margin: 14px 0
+            }
+
+            .route:before {
+                content: "";
+                position: absolute;
+                left: 6%;
+                right: 6%;
+                top: 50%;
+                border-top: 3px dashed var(--brown)
+            }
+
+            .route .dot {
+                position: absolute;
+                top: 50%;
+                transform: translate(-50%,-50%);
+                font-size: 12px;
+                text-align: center
+            }
+
+            .route .bird {
+                position: absolute;
+                top: 30%;
+                font-size: 28px;
+                transform: translateX(-50%);
+                transition: left 1s linear
+            }
+
+            .modal {
+                position: fixed;
+                inset: 0;
+                background: #000a;
+                display: grid;
+                place-items: center;
+                padding: 16px;
+                z-index: 9
+            }
+
+            .paper {
+                background: #F3E8D0;
+                color: #382C24;
+                max-width: 520px;
+                width: 100%;
+                padding: 30px;
+                border: 1px solid #C5AC83;
+                box-shadow: 0 8px 30px #0008;
+                background-image: repeating-linear-gradient(transparent 0 27px,#c5ac8350 28px);
+                line-height: 28px
+            }
+
+            .hero {
+                text-align: center;
+                padding: 10px 0 4px
+            }
+
+            .pg {
+                font-size: 64px;
+                animation: fl 3s ease-in-out infinite;
+                display: inline-block
+            }
+
+            @keyframes fl {
+                50% {
+                    transform: translateY(-8px) rotate(-4deg)
+                }
+            }
+
+            .view {
+                animation: in .35s
+            }
+
+            @keyframes in {
+                from {
+                    opacity: 0;
+                    transform: translateY(8px)
+                }
+            }
+
+            @media(max-width: 760px) {
+                body {
+                    display:block;
+                    padding-bottom: 64px
+                }
+
+                nav {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    top: auto;
+                    width: auto;
+                    height: auto;
+                    flex-direction: row;
+                    overflow-x: auto;
+                    padding: 6px;
+                    padding-bottom: calc(6px + env(safe-area-inset-bottom,0px));
+                    border: 0;
+                    border-top: 3px double var(--line);
+                    z-index: 5
+                }
+
+                nav .logo,nav small {
+                    display: none
+                }
+
+                nav button {
+                    flex-direction: column;
+                    align-items: center;
+                    font-size: 11px;
+                    padding: 6px 10px;
+                    gap: 2px;
+                    white-space: nowrap
+                }
+
+                main {
+                    padding: 16px
+                }
+            }
+
+            #auth {
+                display: none;
+                width: 100%;
+                padding: 16px
+            }
+
+            @media(max-width: 760px) {
+                #auth {
+                    padding:12px
+                }
+            }
+
+            label {
+                font-family: "Special Elite",monospace;
+                font-size: 13px
+            }
+        </style>
+    </head>
+    <body>
+        <div id="auth"></div>
+        <nav id="nav"></nav>
+        <main id="main"></main>
+        <script src="config.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+        <script>
+            const C = {
+                "Adana": [37.00, 35.32],
+                "Adiyaman": [37.76, 38.28],
+                "Afyonkarahisar": [38.75, 30.54],
+                "Ağri": [39.72, 43.05],
+                "Amasya": [40.65, 35.83],
+                "Ankara": [39.93, 32.86],
+                "Antalya": [36.89, 30.71],
+                "Artvin": [41.18, 41.82],
+                "Aydin": [37.84, 27.85],
+                "Balikesir": [39.65, 27.88],
+                "Bilecik": [40.14, 29.98],
+                "Bingöl": [38.88, 40.50],
+                "Bitlis": [38.40, 42.11],
+                "Bolu": [40.73, 31.61],
+                "Burdur": [37.72, 30.29],
+                "Bursa": [40.18, 29.06],
+                "Çanakkale": [40.15, 26.41],
+                "Çankiri": [40.60, 33.62],
+                "Çorum": [40.55, 34.95],
+                "Denizli": [37.78, 29.09],
+                "Diyarbakir": [37.91, 40.23],
+                "Edirne": [41.68, 26.56],
+                "Elaziğ": [38.68, 39.22],
+                "Erzincan": [39.75, 39.49],
+                "Erzurum": [39.90, 41.27],
+                "Eskişehir": [39.78, 30.52],
+                "Gaziantep": [37.06, 37.38],
+                "Giresun": [40.91, 38.39],
+                "Gümüşhane": [40.46, 39.48],
+                "Hakkâri": [37.58, 43.74],
+                "Hatay": [36.20, 36.16],
+                "Isparta": [37.76, 30.55],
+                "Mersin": [36.81, 34.64],
+                "İstanbul": [41.01, 28.98],
+                "İzmir": [38.42, 27.14],
+                "Kars": [40.60, 43.10],
+                "Kastamonu": [41.38, 33.78],
+                "Kayseri": [38.73, 35.48],
+                "Kirklareli": [41.74, 27.23],
+                "Kirşehir": [39.15, 34.17],
+                "Kocaeli": [40.77, 29.94],
+                "Konya": [37.87, 32.48],
+                "Kütahya": [39.42, 29.98],
+                "Malatya": [38.36, 38.31],
+                "Manisa": [38.61, 27.43],
+                "Kahramanmaraş": [37.57, 36.94],
+                "Mardin": [37.31, 40.74],
+                "Muğla": [37.22, 28.36],
+                "Muş": [38.74, 41.51],
+                "Nevşehir": [38.62, 34.71],
+                "Niğde": [37.97, 34.68],
+                "Ordu": [40.98, 37.88],
+                "Rize": [41.02, 40.52],
+                "Sakarya": [40.77, 30.40],
+                "Samsun": [41.29, 36.33],
+                "Siirt": [37.93, 41.94],
+                "Sinop": [42.03, 35.15],
+                "Sivas": [39.75, 37.01],
+                "Tekirdağ": [40.98, 27.51],
+                "Tokat": [40.31, 36.55],
+                "Trabzon": [41.00, 39.72],
+                "Tunceli": [39.11, 39.55],
+                "Şanliurfa": [37.16, 38.79],
+                "Uşak": [38.68, 29.41],
+                "Van": [38.50, 43.38],
+                "Yozgat": [39.82, 34.81],
+                "Zonguldak": [41.45, 31.80],
+                "Aksaray": [38.37, 34.03],
+                "Bayburt": [40.26, 40.23],
+                "Karaman": [37.18, 33.22],
+                "Kirikkale": [39.85, 33.51],
+                "Batman": [37.89, 41.13],
+                "Şirnak": [37.52, 42.46],
+                "Bartin": [41.64, 32.34],
+                "Ardahan": [41.11, 42.70],
+                "Iğdir": [39.92, 44.05],
+                "Yalova": [40.66, 29.28],
+                "Karabük": [41.20, 32.62],
+                "Kilis": [36.72, 37.12],
+                "Osmaniye": [37.07, 36.25],
+                "Düzce": [40.84, 31.16]
+            };
+
+            const dist = (a, b) => {
+                if (!C[a] || !C[b]) return 0;
+                const r = x => x * Math.PI / 180
+                  , [p, q] = [C[a], C[b]]
+                  , d = r(q[0] - p[0])
+                  , e = r(q[1] - p[1]);
+                const h = Math.sin(d / 2) ** 2 + Math.cos(r(p[0])) * Math.cos(r(q[0])) * Math.sin(e / 2) ** 2;
+                return Math.round(12742 * Math.asin(Math.sqrt(h)));
+            };
+
+            const S = {
+                view: 'home',
+                tab: 'in',
+                uid: null,
+                me: null,
+                pg: [],
+                fr: [],
+                lt: [],
+                tr: [],
+                nt: [],
+                P: {},
+                sel: null,
+                draft: null,
+                to: null
+            };
+            const $ = s => document.querySelector(s)
+              , go = v => {
+                if (v != 'new')
+                    S.draft = null;
+                S.view = v;
+                draw()
+            }
+            ;
+            const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[c]));
+            const hm = s => s >= 60 ? Math.floor(s / 60) + ' dk ' + Math.round(s % 60) + ' sn' : Math.max(0, Math.round(s)) + ' sn';
+            const cap = v => Math.max(0, Math.min(100, v))
+              , bar = (v, w) => `<div class="bar ${w ? 'w' : ''}"><i style="width:${v}%"></i></div>`;
+            const un = id => S.P[id]?.username || '?'
+              , fmt = d => d ? new Date(d).toLocaleDateString('tr-TR', {
+                day: '2-digit',
+                month: 'short'
+            }) : '—';
+            const NAV = [['home', '🏠', 'Ana Sayfa'], ['people', '👥', 'Kişiler'], ['new', '✉️', 'Yeni Mektup'], ['trips', '🕊️', 'Yolculuklar'], ['letters', '📬', 'Mektuplar'], ['pigeons', '🪶', 'Güvercinlerim'], ['places', '🗺️', 'Yerler'], ['profile', '📜', 'Profil']];
+            let sb = null;
+            const ok = async p => {
+                const r = await p;
+                if (r.error) {
+                    alert(r.error.code == '23505' ? 'Bu kişiyle zaten bir istek/arkadaşlık var ya da bu değer kullanımda.' : r.error.message)
+                }
+                return r
+            }
+            ;
+
+            
+            async function load() {
+                await sb.rpc('sync_trips');
+                const u = S.uid;
+                const [me,pg,fr,lt,tr,nt] = await Promise.all([sb.from('profiles').select('*').eq('id', u).single(), sb.from('pigeons').select('*').eq('owner_id', u).order('created_at'), sb.from('friendships').select('*'), sb.from('letters').select('*').order('created_at', {
+                    ascending: false
+                }), sb.from('trips').select('*').order('started_at', {
+                    ascending: false
+                }), sb.from('notifications').select('*').order('created_at', {
+                    ascending: false
+                }).limit(8)]);
+                S.me = me.data;
+                S.pg = pg.data || [];
+                S.fr = fr.data || [];
+                S.lt = lt.data || [];
+                S.tr = tr.data || [];
+                S.nt = nt.data || [];
+                const ids = new Set([u]);
+                [...S.fr.flatMap(f => [f.requester_id, f.addressee_id]), ...S.lt.flatMap(l => [l.sender_id, l.recipient_id]), ...S.tr.flatMap(t => [t.sender_id, t.recipient_id])].forEach(i => ids.add(i));
+                const p = await sb.from('profiles').select('id,username,city,bio').in('id', [...ids]);
+                S.P = {};
+                (p.data || []).forEach(x => S.P[x.id] = x);
+                if (!S.pg.find(x => x.id == S.sel))
+                    S.sel = S.pg[0]?.id;
+            }
+            const friends = () => S.fr.filter(f => f.status == 'accepted').map(f => ({
+                fid: f.id,
+                id: f.requester_id == S.uid ? f.addressee_id : f.requester_id
+            }));
+            const reqIn = () => S.fr.filter(f => f.status == 'pending' && f.addressee_id == S.uid)
+              , reqOut = () => S.fr.filter(f => f.status == 'pending' && f.requester_id == S.uid);
+            const cost = km => Math.min(60, Math.max(5, Math.round(km / 12)));
+            let tm;
+            const sched = () => {
+                clearTimeout(tm);
+                tm = setTimeout(async () => {
+                    if (!S.uid)
+                        return;
+                    await load();
+                    if (!document.activeElement?.matches('input,textarea,select'))
+                        draw()
+                }
+                , 300)
+            }
+            ;
+
+            
+            function showAuth(m='in') {
+                const bad = /PROJE-ID|ANON-PUBLIC/.test(CONFIG.SUPABASE_URL + CONFIG.SUPABASE_ANON_KEY);
+                $('#auth').innerHTML = `<div class="card" style="max-width:420px;margin:8vh auto"><div class="hero"><h1 style="letter-spacing:4px">BIRDS</h1><div class="mono">THE PIGEON POST · EST. 2026</div></div>${bad ? '<p class="mono">⚠️ config.js içine Supabase URL ve anon key yaz.</p>' : ''}
+ ${m == 'up' ? '<label>Kullanıcı adı</label><input id="au" placeholder="busra_k" maxlength="20" autocapitalize="none">' : ''}<label>E-posta</label><input id="ae" type="email"><label>Şifre</label><input id="ap" type="password" minlength="6">
+ <p id="am" class="mono" style="color:var(--wine)"></p><button class="btn wine" onclick="auth('${m}')">${m == 'up' ? 'Kayıt ol' : 'Giriş yap'}</button> <button class="btn olive" onclick="showAuth('${m == 'up' ? 'in' : 'up'}')">${m == 'up' ? 'Hesabım var' : 'Yeni hesap'}</button></div>`;
+            }
+            async function auth(m) {
+                const e = $('#ae').value.trim()
+                  , p = $('#ap').value
+                  , msg = t => $('#am').textContent = t;
+                if (m == 'up') {
+                    const u = $('#au').value.trim().toLowerCase();
+                    if (!/^[a-z0-9_]{3,20}$/.test(u))
+                        return msg('Kullanıcı adı: 3-20 karakter, küçük harf, rakam veya _');
+                    const {data, error} = await sb.auth.signUp({
+                        email: e,
+                        password: p,
+                        options: {
+                            data: {
+                                username: u
+                            }
+                        }
+                    });
+                    if (error)
+                        return msg(/database|already|unique|profiles/i.test(error.message) ? 'Kullanıcı adı ya da e-posta kullanımda.' : error.message);
+                    if (!data.session)
+                        msg('Kayıt tamam! E-postandaki doğrulama bağlantısına tıkla, sonra giriş yap.')
+                } else {
+                    const {error} = await sb.auth.signInWithPassword({
+                        email: e,
+                        password: p
+                    });
+                    if (error)
+                        msg('E-posta veya şifre hatalı.')
+                }
+            }
+            async function logout() {
+                await sb.auth.signOut()
+            }
+
+          
+            function draw() {
+                const on = !!S.uid;
+                $('#auth').style.display = on ? 'none' : 'block';
+                $('#nav').style.display = on ? '' : 'none';
+                $('#main').style.display = on ? '' : 'none';
+                if (!on)
+                    return;
+                $('#nav').innerHTML = '<div class="logo">BIRDS</div><small>THE PIGEON POST · EST. 2026</small>' + NAV.map(n => `<button class="${S.view == n[0] ? 'on' : ''}" onclick="go('${n[0]}')"><span>${n[1]}</span>${n[2]}</button>`).join('') + '<button onclick="toggleTheme()"><span>🌙</span>Tema</button>';
+                $('#main').innerHTML = '<div class="view">' + V[S.view]() + '</div>';
+                if (S.view == 'new' && $('#to')) {
+                    est();
+                    cnt()
+                }
+            }
+            function toggleTheme() {
+                const r = document.documentElement
+                  , d = getComputedStyle(r).getPropertyValue('--bg').trim() == '#2a211b';
+                r.dataset.theme = d ? 'light' : 'dark'
+            }
+            const cur = () => S.pg.find(x => x.id == S.sel);
+            const pgCard = p => !p ? '<div class="card">Güvercin yok.</div>' : `<div class="card hero"><div class="mono">Senin güvercinin</div><h1>${esc(p.name)}</h1><div class="pg">🕊️</div><div><span class="tag">${p.state == 'home' ? 'Yuvada dinleniyor' : 'Yolda'}</span></div>
+<div style="text-align:left;margin-top:14px"><div class="mono">Enerji ${p.energy}/100</div>${bar(p.energy)}<div class="mono" style="margin-top:8px">Tokluk ${p.food}/100</div>${bar(p.food, 1)}</div>
+<p><button class="btn olive" onclick="care('${p.id}','feed')">🌾 Besle</button> <button class="btn" onclick="care('${p.id}','rest')">🪺 Dinlendir</button></p></div>`;
+            async function care(id, a) {
+                const r = await ok(sb.rpc('care_pigeon', {
+                    pid: id,
+                    act: a
+                }));
+                if (!r.error) {
+                    await load();
+                    draw()
+                }
+            }
+            const lk = l => l.sender_id == S.uid ? 'out' : 'in';
+            const tabL = t => S.lt.filter(l => t == 'draft' ? (l.sender_id == S.uid && l.status == 'draft') : t == 'out' ? (l.sender_id == S.uid && l.status != 'draft') : (l.recipient_id == S.uid && l.status == 'delivered'));
+            const stT = {
+                draft: 'Taslak',
+                in_transit: 'Yolda',
+                delivered: 'Teslim edildi'
+            };
+            const letterRow = l => `<div class="row"><div><b>${l.sender_id == S.uid ? 'Alıcı: ' + esc(un(l.recipient_id)) : 'Gönderen: ' + esc(un(l.sender_id))}</b> — ${esc(l.subject)}<br><span class="mono" style="font-size:12px">${fmt(l.sent_at || l.created_at)}</span></div><div><span class="tag ${l.status == 'in_transit' ? 'w' : ''}">${stT[l.status]}</span> ${l.status == 'draft' ? `<button class="btn" onclick="editD('${l.id}')">Düzenle</button> <button class="btn wine" onclick="delD('${l.id}')">Sil</button>` : `<button class="btn" onclick="openL('${l.id}')">Aç</button>`}</div></div>`;
+            function openL(id) {
+                const l = S.lt.find(x => x.id == id);
+                const m = document.createElement('div');
+                m.className = 'modal';
+                m.onclick = e => {
+                    if (e.target == m)
+                        m.remove()
+                }
+                ;
+                m.innerHTML = `<div class="paper mono"><span class="seal">🕊️</span><h3>${esc(l.subject)}</h3><div>${lk(l) == 'in' ? 'Kimden' : 'Kime'}: ${esc(un(lk(l) == 'in' ? l.sender_id : l.recipient_id))}</div><p>${esc(l.body)}</p>${l.status == 'delivered' ? '<span class="stamp">TESLİM EDİLDİ</span>' : ''}<p><button class="btn" onclick="this.closest('.modal').remove()">Kapat</button></p></div>`;
+                document.body.appendChild(m)
+            }
+            const empty = t => `<div class="card">${t}</div>`;
+            const V = {
+                home: () => `<h2>Merhaba ${esc(S.me?.username)}, ${esc(cur()?.name || 'güvercinin')} bugün seninle uçmaya hazır!</h2>${pgCard(cur())}
+<div class="grid"><div class="card"><h3>✉️ Yeni mektup</h3><p>${friends().length ? 'Arkadaşına yaz.' : 'Önce bir arkadaş ekle.'}</p><button class="btn wine" onclick="go('${friends().length ? 'new' : 'people'}')">${friends().length ? 'Yaz →' : 'Kişiler →'}</button></div><div class="card"><h3>📬 Gelen kutusu</h3><p>${tabL('in').length} mektup · ${reqIn().length} arkadaşlık isteği</p><button class="btn" onclick="go('letters')">Aç →</button></div><div class="card"><h3>🕊️ Yolculuklar</h3><p>${S.tr.filter(t => t.status == 'in_transit').length} aktif yolculuk.</p><button class="btn olive" onclick="go('trips')">Takip et →</button></div></div>
+<div class="card"><h3>Son aktiviteler</h3>${S.nt.map(n => `<div class="row">📜 ${esc(n.text)} <span class="mono" style="font-size:12px">${fmt(n.created_at)}</span></div>`).join('') || 'Henüz aktivite yok.'}</div>`,
+                people: () => `<h2>Kişiler</h2><div class="card"><h3>Kullanıcı ara</h3><input id="q" placeholder="Kullanıcı adı yaz, Enter'a bas..." onkeydown="if(event.key=='Enter')srch()"><div id="sr"></div></div>
+${reqIn().length ? `<div class="card"><h3>Gelen istekler</h3>${reqIn().map(f => `<div class="row"><b>@${esc(un(f.requester_id))}</b><div><button class="btn olive" onclick="fAcc('${f.id}')">Kabul</button> <button class="btn wine" onclick="fDel('${f.id}')">Reddet</button></div></div>`).join('')}</div>` : ''}
+${reqOut().length ? `<div class="card"><h3>Gönderdiğin istekler</h3>${reqOut().map(f => `<div class="row"><b>@${esc(un(f.addressee_id))}</b><button class="btn" onclick="fDel('${f.id}')">İptal</button></div>`).join('')}</div>` : ''}
+<h3>Arkadaşlar</h3>${friends().length ? `<div class="grid">${friends().map(f => `<div class="card"><h3>@${esc(un(f.id))}</h3><div class="mono">${esc(S.P[f.id]?.city)}</div><p>${S.lt.filter(l => l.sender_id == f.id || l.recipient_id == f.id).length} mektup</p><button class="btn" onclick="S.to='${f.id}';go('new')">Mektup gönder</button> <button class="btn wine" onclick="if(confirm('Arkadaşlıktan çıkarılsın mı?'))fDel('${f.fid}')">Sil</button></div>`).join('')}</div>` : empty('Henüz arkadaşın yok. Yukarıdan bir kullanıcı adı arayıp istek gönder. 🕊️')}`,
+                new: () => {
+                    const fr = friends()
+                      , pg = S.pg.filter(p => p.state == 'home')
+                      , d = S.draft;
+                    if (!fr.length)
+                        return `<h2>Yeni mektup</h2>${empty('Mektup göndermek için önce kabul edilmiş bir arkadaşın olmalı.')}`;
+                    return `<h2>${d ? 'Taslağı düzenle' : 'Yeni mektup oluştur'}</h2><div class="card"><label>Alıcı</label><select id="to" onchange="est()">${fr.map(f => `<option value="${f.id}" ${(d ? d.recipient_id : S.to) == f.id ? 'selected' : ''}>@${esc(un(f.id))} (${esc(S.P[f.id]?.city)})</option>`).join('')}</select><label>Güvercin</label><select id="pgs" onchange="est()">${S.pg.map(p => `<option value="${p.id}" ${p.state != 'home' ? 'disabled' : ''} ${(d ? d.pigeon_id : S.sel) == p.id ? 'selected' : ''}>${esc(p.name)} (enerji ${p.energy})${p.state != 'home' ? ' — yolda' : ''}</option>`).join('')}</select><label>Konu</label><input id="sub" maxlength="100" value="${esc(d?.subject)}" placeholder="Sana bir haberim var..."><label>Mektubun</label><textarea id="body" rows="7" maxlength="1000" oninput="cnt()" placeholder="Sevgili arkadaşım, bugün sana...">${esc(d?.body)}</textarea><div class="mono" id="cn">0 / 1000 karakter</div><p class="mono" id="est"></p><button class="btn wine" onclick="send()">✉️ Gönder</button> <button class="btn olive" onclick="saveD()">Taslak kaydet</button></div>`
+                }
+                ,
+                trips: () => `<h2>Yolculuklar</h2>${S.tr.length ? S.tr.map(t => {
+                    const now = Date.now()
+                      , a = +new Date(t.started_at)
+                      , b = +new Date(t.eta)
+                      , pr = t.status == 'delivered' ? 100 : cap(Math.round((now - a) / (b - a) * 100));
+                    return `<div class="card"><h3>${esc(un(t.sender_id))} → ${esc(un(t.recipient_id))}</h3><div class="mono">${esc(t.from_city)} → ${esc(t.to_city)} · <span class="tag ${t.status == 'delivered' ? '' : 'w'}">${t.status == 'delivered' ? 'Mektup teslim edildi' : 'Yolda'}</span></div><div class="route"><span class="dot" style="left:6%">📍<br>${esc(t.from_city)}</span><span class="dot" style="left:94%">🏠<br>${esc(t.to_city)}</span><span class="bird" style="left:${6 + pr * .88}%">🕊️</span></div>${bar(pr)}<p class="mono">İlerleme %${pr} · Kalan: ${t.status == 'delivered' ? '—' : hm((b - now) / 1000)}</p>${(t.events || []).filter(e => +new Date(e.at) <= now).map(e => `<div class="row">✒️ ${esc(e.text)}</div>`).join('')}${t.status == 'delivered' ? '<span class="stamp">TESLİM EDİLDİ</span>' : ''}</div>`
+                }
+                ).join('') : empty('Henüz yolculuk yok. Bir mektup gönder! 🕊️')}`,
+                letters: () => `<h2>Mektuplar</h2><div class="tabs">${[['in', 'Gelen kutusu'], ['out', 'Gönderilenler'], ['draft', 'Taslaklar']].map(t => `<button class="btn ${S.tab == t[0] ? 'wine' : ''}" onclick="S.tab='${t[0]}';draw()">${t[1]}</button>`).join('')}</div><div class="card">${tabL(S.tab).map(letterRow).join('') || 'Burada mektup yok.'}</div>${S.tab == 'in' && S.tr.some(t => t.recipient_id == S.uid && t.status == 'in_transit') ? '<p class="mono">🕊️ Sana yolda olan mektuplar var; teslim edilince burada açılır.</p>' : ''}`,
+                pigeons: () => `<h2>Güvercinlerim</h2>${S.pg.map(p => `${pgCard(p)}<div class="card">${[['Enerji', p.energy], ['Tokluk', p.food], ['Sağlık', p.health], ['Hız', p.speed], ['Deneyim', p.xp % 100], ['Mutluluk', p.joy]].map(x => `<div class="mono">${x[0]}: ${x[1]}${x[0] == 'Hız' ? ' km/sa' : ''}</div>${bar(cap(x[1]))}`).join('<br>')}<p><button class="btn" onclick="ren('${p.id}','${esc(p.name)}')">✏️ Adını değiştir</button></p></div>`).join('')}${S.pg.length < 3 ? '<button class="btn olive" onclick="adopt()">+ Yeni güvercin sahiplen</button>' : ''}`,
+                places: () => {
+                    const c = S.me?.city;
+                    return `<h2>Yerler</h2><div class="card"><label>Konumun</label><select onchange="setCity(this.value)">${Object.keys(C).map(x => `<option ${c == x ? 'selected' : ''}>${x}</option>`).join('')}</select></div><div class="grid">${Object.keys(C).filter(x => x != c).map(x => `<div class="card"><h3>📍 ${x}</h3><div class="mono">${dist(c, x)} km · ~${hm(dist(c, x) / (cur()?.speed || 60) * 60)}</div><div class="mono">Arkadaşlar: ${friends().filter(f => S.P[f.id]?.city == x).map(f => '@' + esc(un(f.id))).join(', ') || '—'}</div></div>`).join('')}</div>`
+                }
+                ,
+                profile: () => {
+                    const m = S.me || {}
+                      , sent = S.lt.filter(l => l.sender_id == S.uid && l.status != 'draft');
+                    return `<h2>Profil</h2><div class="card"><div style="display:flex;gap:16px;align-items:center"><span class="seal" style="width:70px;height:70px;font-size:32px">${esc((m.username || '?')[0].toUpperCase())}</span><div><h3>@${esc(m.username)}</h3><div class="mono">Kayıt: ${fmt(m.created_at)} · ${esc(m.city)}</div></div></div><label>Biyografi</label><textarea id="bio" rows="2" maxlength="200">${esc(m.bio)}</textarea><button class="btn" onclick="saveBio()">Kaydet</button> <button class="btn wine" onclick="logout()">Çıkış yap</button></div><div class="grid"><div class="card"><h1>${sent.length}</h1>Gönderilen mektup</div><div class="card"><h1>${sent.filter(l => l.status == 'delivered').length}</h1>Teslim edilen</div><div class="card"><h1>${S.pg.length}</h1>Güvercin</div></div><div class="card"><h3>Güvercinlerim</h3>${S.pg.map(p => `<div class="row">🕊️ ${esc(p.name)} <span class="mono">XP ${p.xp}</span></div>`).join('')}</div>`
+                }
+            };
+
+            
+            async function srch() {
+                const q = $('#q').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+                if (q.length < 2)
+                    return;
+                const r = await ok(sb.from('profiles').select('id,username,city').ilike('username', '%' + q + '%').neq('id', S.uid).limit(8));
+                const rel = new Set(S.fr.flatMap(f => [f.requester_id, f.addressee_id]));
+                $('#sr').innerHTML = (r.data || []).map(u => `<div class="row"><b>@${esc(u.username)}</b> <span class="mono">${esc(u.city)}</span>${rel.has(u.id) ? '<span class="tag">İstek/arkadaş</span>' : `<button class="btn" onclick="fReq('${u.id}')">İstek gönder</button>`}</div>`).join('') || '<p class="mono">Kullanıcı bulunamadı.</p>'
+            }
+            const reload = async () => {
+                await load();
+                draw()
+            }
+            ;
+            async function fReq(id) {
+                if ((await ok(sb.from('friendships').insert({
+                    requester_id: S.uid,
+                    addressee_id: id
+                }))).error)
+                    return;
+                reload()
+            }
+            async function fAcc(id) {
+                await ok(sb.from('friendships').update({
+                    status: 'accepted'
+                }).eq('id', id));
+                reload()
+            }
+            async function fDel(id) {
+                await ok(sb.from('friendships').delete().eq('id', id));
+                reload()
+            }
+            async function ren(id, o) {
+                const n = prompt('Yeni isim', o);
+                if (n && n.trim()) {
+                    await ok(sb.from('pigeons').update({
+                        name: n.trim().slice(0, 20)
+                    }).eq('id', id));
+                    reload()
+                }
+            }
+            async function adopt() {
+                const n = prompt('Yeni güvercinin adı?');
+                if (n && n.trim()) {
+                    await ok(sb.rpc('adopt_pigeon', {
+                        nm: n
+                    }));
+                    reload()
+                }
+            }
+            async function setCity(c) {
+                await ok(sb.from('profiles').update({
+                    city: c
+                }).eq('id', S.uid));
+                reload()
+            }
+            async function saveBio() {
+                await ok(sb.from('profiles').update({
+                    bio: $('#bio').value
+                }).eq('id', S.uid));
+                reload()
+            }
+            function cnt() {
+                $('#cn').textContent = $('#body').value.length + ' / 1000 karakter'
+            }
+            function est() {
+                const t = $('#to')
+                  , g = $('#pgs');
+                if (!t)
+                    return;
+                const p = S.pg.find(x => x.id == g.value)
+                  , to = S.P[t.value]?.city
+                  , km = dist(S.me.city, to)
+                  , s = Math.max(10, Math.round(km / (p?.speed || 60) * 60));
+                $('#est').textContent = `Mesafe ${km} km · Tahmini teslimat: ${hm(s)} (demo: 1 saat = 1 dk) · Enerji maliyeti: ${cost(km)}`
+            }
+            function editD(id) {
+                S.draft = S.lt.find(l => l.id == id);
+                go('new');
+                setTimeout(cnt, 0)
+            }
+            async function delD(id) {
+                if (confirm('Taslak silinsin mi?')) {
+                    await ok(sb.from('letters').delete().eq('id', id));
+                    reload()
+                }
+            }
+            async function saveD(send) {
+                const sub = $('#sub').value.trim()
+                  , body = $('#body').value.trim();
+                if (!sub || !body) {
+                    alert('Konu ve mektup metni boş olamaz.');
+                    return
+                }
+                const row = {
+                    recipient_id: $('#to').value,
+                    pigeon_id: $('#pgs').value,
+                    subject: sub,
+                    body
+                };
+                let id = S.draft?.id;
+                if (id) {
+                    if ((await ok(sb.from('letters').update(row).eq('id', id))).error)
+                        return
+                } else {
+                    const r = await ok(sb.from('letters').insert({
+                        ...row,
+                        sender_id: S.uid
+                    }).select('id').single());
+                    if (r.error)
+                        return;
+                    id = r.data.id
+                }
+                S.draft = null;
+                return id
+            }
+            async function send() {
+                const id = await saveD();
+                if (!id)
+                    return;
+                const r = await ok(sb.rpc('send_letter', {
+                    lid: id
+                }));
+                S.to = null;
+                await load();
+                if (r.error) {
+                    S.tab = 'draft';
+                    go('letters')
+                } else
+                    go('trips')
+            }
+
+            
+            async function start() {
+                await load();
+                draw();
+                sb.removeAllChannels();
+                sb.channel('birds').on('postgres_changes', {
+                    event: '*',
+                    schema: 'public'
+                }, sched).subscribe()
+            }
+            (function boot() {
+                sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+                showAuth();
+                sb.auth.onAuthStateChange( (ev, s) => {
+                    if (s?.user) {
+                        if (S.uid !== s.user.id) {
+                            S.uid = s.user.id;
+                            setTimeout(start, 0)
+                        }
+                    } else {
+                        S.uid = null;
+                        sb.removeAllChannels();
+                        draw();
+                        showAuth()
+                    }
+                }
+                );
+                setInterval( () => {
+                    if (!S.uid)
+                        return;
+                    const due = S.tr.some(t => t.status == 'in_transit' && +new Date(t.eta) <= Date.now());
+                    if (due)
+                        return sched();
+                    if (S.view == 'trips')
+                        draw()
+                }
+                , 1000);
+                setInterval(sched, 20000);
+                
+            }
+            )();
+        </script>
+    </body>
+</html>
